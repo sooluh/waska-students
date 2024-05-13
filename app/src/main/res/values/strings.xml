@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Waska Students</string>
+    <string name="title_home">Beranda</string>
+    <string name="title_bookmarks">Bookmark</string>
+    <string name="title_submit">Submit</string>
+    <string name="placeholder_search">Cari nama mahasiswa</string>
+    <string name="profile_picture">Foto profil</string>
+    <string name="student_name">Nama mahasiswa</string>
+    <string name="student_id">NIM mahasiswa</string>
+    <string name="back">Kembali</string>
+    <string name="gender">Jenis kelamin</string>
+    <string name="admission_year">Tahun masuk</string>
+    <string name="pddikti">PDDikti</string>
+    <string name="first_semester">Awal semester</string>
+    <string name="is_graduated">Status kelulusan</string>
+    <string name="education_level">Jenjang</string>
+    <string name="study">Jurusan</string>
+    <string name="loading">Memuat ...</string>
+    <string name="student_detail">Detail Mahasiswa</string>
+</resources>

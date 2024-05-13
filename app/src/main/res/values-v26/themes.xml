@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ThemeOverlay.SearchView" parent="">
+        <item name="android:editTextColor">@color/white_300</item>
+        <item name="android:textColorHint">@color/white_200</item>
+        <item name="android:iconTint">@color/white_200</item>
+    </style>
+</resources>
