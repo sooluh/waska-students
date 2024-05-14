@@ -82,6 +82,7 @@ class DetailActivity : AppCompatActivity() {
                     val customBuilder = builder.build()
 
                     try {
+                        customBuilder.intent.setPackage("com.android.chrome")
                         customBuilder.launchUrl(this@DetailActivity, Uri.parse(student.pddikti))
                     } catch (e: ActivityNotFoundException) {
                         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(student.pddikti))
