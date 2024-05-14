@@ -1,5 +1,6 @@
 package id.my.suluh.waska.ui
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,9 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import id.my.suluh.waska.R
 import id.my.suluh.waska.databinding.ActivityDetailBinding
@@ -75,15 +74,6 @@ class DetailActivity : AppCompatActivity() {
 
                 if (clickTime - lastClick > clickDelay) {
                     val builder = CustomTabsIntent.Builder()
-                    val params = CustomTabColorSchemeParams.Builder()
-
-                    params.setToolbarColor(
-                        ContextCompat.getColor(
-                            this@DetailActivity,
-                            R.color.white_200
-                        )
-                    )
-                    builder.setDefaultColorSchemeParams(params.build())
 
                     builder.setShowTitle(true)
                     builder.setShareState(CustomTabsIntent.SHARE_STATE_ON)
@@ -91,24 +81,14 @@ class DetailActivity : AppCompatActivity() {
 
                     val customBuilder = builder.build()
 
-                    if (isPackageInstalled("com.android.chrome")) {
-                        customBuilder.intent.setPackage("com.android.chrome")
+                    try {
                         customBuilder.launchUrl(this@DetailActivity, Uri.parse(student.pddikti))
-                    } else {
+                    } catch (e: ActivityNotFoundException) {
                         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(student.pddikti))
                         startActivity(browserIntent)
                     }
                 }
             }
-        }
-    }
-
-    private fun isPackageInstalled(packageName: String): Boolean {
-        return try {
-            packageManager.getPackageInfo(packageName, 0)
-            true
-        } catch (e: Exception) {
-            false
         }
     }
 
