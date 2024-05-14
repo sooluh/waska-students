@@ -7,9 +7,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import id.my.suluh.waska.R
 import id.my.suluh.waska.databinding.ActivityDetailBinding
 import id.my.suluh.waska.db.api.response.StudentDetail
 import id.my.suluh.waska.viewmodel.DetailViewModel
+import java.net.URLEncoder
 
 class DetailActivity : AppCompatActivity() {
     private var lastClick: Long = 0
@@ -48,7 +54,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun parseDetail(student: StudentDetail) {
         binding.apply {
-            studentDetail.visibility = View.VISIBLE
+            val encodedName = URLEncoder.encode(student.name, "UTF-8")
 
             tvName.text = student.name
             tvNumber.text = student.number.toString()
@@ -59,14 +65,50 @@ class DetailActivity : AppCompatActivity() {
             tvEducationLevel.text = student.educationLevel
             tvStudy.text = student.study
 
+            Glide.with(root.context)
+                .load("https://api.dicebear.com/8.x/notionists-neutral/png?size=256&seed=${encodedName}")
+                .placeholder(R.drawable.ic_person_24)
+                .into(ivProfilePicture)
+
             btnPddikti.setOnClickListener {
                 val clickTime = System.currentTimeMillis()
 
                 if (clickTime - lastClick > clickDelay) {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(student.pddikti))
-                    startActivity(browserIntent)
+                    val builder = CustomTabsIntent.Builder()
+                    val params = CustomTabColorSchemeParams.Builder()
+
+                    params.setToolbarColor(
+                        ContextCompat.getColor(
+                            this@DetailActivity,
+                            R.color.white_200
+                        )
+                    )
+                    builder.setDefaultColorSchemeParams(params.build())
+
+                    builder.setShowTitle(true)
+                    builder.setShareState(CustomTabsIntent.SHARE_STATE_ON)
+                    builder.setInstantAppsEnabled(true)
+
+                    val customBuilder = builder.build()
+
+                    if (isPackageInstalled("com.android.chrome")) {
+                        customBuilder.intent.setPackage("com.android.chrome")
+                        customBuilder.launchUrl(this@DetailActivity, Uri.parse(student.pddikti))
+                    } else {
+                        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(student.pddikti))
+                        startActivity(browserIntent)
+                    }
                 }
             }
+        }
+    }
+
+    private fun isPackageInstalled(packageName: String): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 

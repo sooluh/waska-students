@@ -1,5 +1,6 @@
 package id.my.suluh.waska.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +8,7 @@ import com.bumptech.glide.Glide
 import id.my.suluh.waska.db.api.response.StudentList
 import id.my.suluh.waska.databinding.StudentItemBinding
 import id.my.suluh.waska.R
+import java.net.URLEncoder
 
 class StudentListAdapter(private val listStudents: ArrayList<StudentList>) :
     RecyclerView.Adapter<StudentListAdapter.ListViewHolder>() {
@@ -28,11 +30,13 @@ class StudentListAdapter(private val listStudents: ArrayList<StudentList>) :
         val student = listStudents[position]
 
         holder.binding.apply {
+            val encodedName = URLEncoder.encode(student.name, "UTF-8")
+
             cardTvName.text = student.name
             cardTvNumber.text = student.number.toString()
 
             Glide.with(root.context)
-                .load("https://api.dicebear.com/8.x/lorelei/svg?seed=${student.name}")
+                .load("https://api.dicebear.com/8.x/notionists-neutral/png?size=256&seed=${encodedName}")
                 .placeholder(R.drawable.ic_person_24)
                 .into(profilePicture)
         }

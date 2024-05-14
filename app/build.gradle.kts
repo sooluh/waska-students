@@ -49,6 +49,8 @@ android {
 }
 
 dependencies {
+    implementation("androidx.browser:browser:1.3.0")
+
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
