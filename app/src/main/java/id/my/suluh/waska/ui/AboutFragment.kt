@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import id.my.suluh.waska.databinding.FragmentBookmarksBinding
-import id.my.suluh.waska.viewmodel.BookmarksViewModel
+import id.my.suluh.waska.databinding.FragmentAboutBinding
+import id.my.suluh.waska.viewmodel.AboutViewModel
 
-class BookmarksFragment : Fragment() {
+class AboutFragment : Fragment() {
 
-    private var _binding: FragmentBookmarksBinding? = null
+    private var _binding: FragmentAboutBinding? = null
 
     private val binding get() = _binding!!
 
@@ -21,14 +21,14 @@ class BookmarksFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val bookmarksViewModel = ViewModelProvider(this)[BookmarksViewModel::class.java]
+        val submitViewModel = ViewModelProvider(this)[AboutViewModel::class.java]
 
-        _binding = FragmentBookmarksBinding.inflate(inflater, container, false)
+        _binding = FragmentAboutBinding.inflate(inflater, container, false)
 
         val root: View = binding.root
-        val textView: TextView = binding.textBookmarks
+        val textView: TextView = binding.textAbout
 
-        bookmarksViewModel.text.observe(viewLifecycleOwner) {
+        submitViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
 

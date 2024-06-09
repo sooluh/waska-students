@@ -9,4 +9,5 @@
         <item name="android:navigationBarColor">@color/black_200</item>
         <item name="android:statusBarColor">@color/black_200</item>
     </style>
+
 </resources>

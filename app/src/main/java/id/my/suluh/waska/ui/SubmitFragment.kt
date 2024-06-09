@@ -21,12 +21,12 @@ class SubmitFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val submitViewModel = ViewModelProvider(this).get(SubmitViewModel::class.java)
+        val submitViewModel = ViewModelProvider(this)[SubmitViewModel::class.java]
 
         _binding = FragmentSubmitBinding.inflate(inflater, container, false)
 
         val root: View = binding.root
-        val textView: TextView = binding.textNotifications
+        val textView: TextView = binding.textSubmit
 
         submitViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it

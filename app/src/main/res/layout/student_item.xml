@@ -16,7 +16,7 @@
         android:contentDescription="@string/profile_picture"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_person_24" />
+        tools:src="@drawable/ic_person" />
 
     <TextView
         android:id="@+id/card_tv_name"

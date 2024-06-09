@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.BookmarksFragment">
+    tools:context=".ui.AboutFragment">
 
     <TextView
-        android:id="@+id/text_bookmarks"
+        android:id="@+id/text_about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

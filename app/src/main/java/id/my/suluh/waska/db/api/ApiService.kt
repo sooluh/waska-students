@@ -11,7 +11,8 @@ interface ApiService {
 
     @GET("students?limit=50")
     fun searchStudents(
-        @Query("q") q: String?
+        @Query("q") q: String?,
+        @Query("page") page: Int?
     ): Call<ResponseLatest>
 
     @GET("students/{number}")

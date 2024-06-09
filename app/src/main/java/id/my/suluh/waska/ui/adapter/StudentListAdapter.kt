@@ -36,7 +36,7 @@ class StudentListAdapter(private val listStudents: ArrayList<StudentList>) :
 
             Glide.with(root.context)
                 .load("https://api.dicebear.com/8.x/notionists-neutral/png?size=256&seed=${encodedName}")
-                .placeholder(R.drawable.ic_person_24)
+                .placeholder(R.drawable.ic_person)
                 .into(profilePicture)
         }
 

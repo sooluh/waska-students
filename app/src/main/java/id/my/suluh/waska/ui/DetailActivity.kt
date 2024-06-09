@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import id.my.suluh.waska.R
 import id.my.suluh.waska.databinding.ActivityDetailBinding
 import id.my.suluh.waska.db.api.response.StudentDetail
+import id.my.suluh.waska.db.entity.StudentEntity
 import id.my.suluh.waska.viewmodel.DetailViewModel
 import java.net.URLEncoder
 
@@ -24,7 +25,10 @@ class DetailActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private var number: Int? = null
-    private val detailViewModel by viewModels<DetailViewModel>()
+    private lateinit var studentBookmark: List<StudentEntity>
+    private val detailViewModel: DetailViewModel by viewModels<DetailViewModel> {
+        DetailViewModel.Factory(this@DetailActivity.application)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +37,39 @@ class DetailActivity : AppCompatActivity() {
         number = intent.getIntExtra(EXTRA_NUMBER, 0)
 
         setContentView(binding.root)
-
         detailViewModel.getDetail(number!!)
 
         detailViewModel.student.observe(this) { student ->
             if (student != null) {
                 parseDetail(student)
+
+                detailViewModel.isBookmarked(student.number).observe(this) { bookmarkData ->
+                    studentBookmark = bookmarkData
+
+                    binding.fabBookmark.setImageResource(
+                        if (bookmarkData.isNotEmpty()) R.drawable.ic_bookmark_filled else R.drawable.ic_bookmark
+                    )
+                }
+
+                binding.fabBookmark.setOnClickListener {
+                    if (studentBookmark.isNotEmpty()) {
+                        detailViewModel.delete(
+                            StudentEntity(
+                                student.number,
+                                student.name,
+                                student.study
+                            )
+                        )
+                    } else {
+                        detailViewModel.insert(
+                            StudentEntity(
+                                student.number,
+                                student.name,
+                                student.study
+                            )
+                        )
+                    }
+                }
             }
         }
 
@@ -57,16 +88,16 @@ class DetailActivity : AppCompatActivity() {
 
             tvName.text = student.name
             tvNumber.text = student.number.toString()
-            tvGender.text = if (student.gender == 'M') "Laki-laki" else "Perempuan"
+            tvGender.text = if (student.gender == 'M') "Laki-Laki" else "Perempuan"
             tvAdmissionYear.text = student.admissionYear.toString()
             tvFirstSemester.text = if (student.firstSemester == 1) "Ganjil" else "Genap"
-            tvIsGraduated.text = if (student.isGraduated) "Lulus" else "Belum lulus"
+            tvIsGraduated.text = if (student.isGraduated) "Lulus" else "Belum Lulus"
             tvEducationLevel.text = student.educationLevel
             tvStudy.text = student.study
 
             Glide.with(root.context)
                 .load("https://api.dicebear.com/8.x/notionists-neutral/png?size=256&seed=${encodedName}")
-                .placeholder(R.drawable.ic_person_24)
+                .placeholder(R.drawable.ic_person)
                 .into(ivProfilePicture)
 
             btnPddikti.setOnClickListener {

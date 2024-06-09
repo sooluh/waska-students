@@ -19,7 +19,7 @@ class StudentRepository(application: Application) {
 
     fun getAllStudents(): LiveData<List<StudentEntity>> = studentDao.getAllStudents()
 
-    fun getStudentByNumber(number: Int): LiveData<StudentEntity> =
+    fun getStudentByNumber(number: Int): LiveData<List<StudentEntity>> =
         studentDao.getStudentByNumber(number)
 
     fun insert(student: StudentEntity) = executorService.execute { studentDao.insert(student) }

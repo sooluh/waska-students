@@ -21,24 +21,41 @@ class HomeViewModel() : ViewModel() {
     private val _studentList = MutableLiveData<ArrayList<StudentList>?>(null)
     val studentList: LiveData<ArrayList<StudentList>?> = _studentList
 
+    private val _keywords = MutableLiveData<String?>(null)
+    val keywords: LiveData<String?> = _keywords
+
+    private val _currentPage = MutableLiveData<Int?>(null)
+    val currentPage: LiveData<Int?> = _currentPage
+
     init {
         searchStudent(null)
     }
 
-    fun searchStudent(query: String?) {
+    fun searchStudent(query: String?, page: Int? = 1) {
+        if (_keywords.value == query && _currentPage.value == page) {
+            return
+        }
+
+        _keywords.value = query
+        _currentPage.value = page
         _isLoading.value = true
 
-        ApiConfig.getApiService().searchStudents(query).apply {
+        ApiConfig.getApiService().searchStudents(query, page).apply {
             enqueue(object : Callback<ResponseLatest> {
                 override fun onResponse(
                     call: Call<ResponseLatest>,
                     response: Response<ResponseLatest>
                 ) {
-                    if (response.isSuccessful) _studentList.value = response.body()?.data
-                    else Log.e(TAG, response.message())
+                    val body = response.body()
+
+                    if (!response.isSuccessful || body?.code != "OK") {
+                        _isError.value = true
+                    } else {
+                        _studentList.value = body.data
+                        _isError.value = false
+                    }
 
                     _isLoading.value = false
-                    _isError.value = false
                 }
 
                 override fun onFailure(call: Call<ResponseLatest>, t: Throwable) {

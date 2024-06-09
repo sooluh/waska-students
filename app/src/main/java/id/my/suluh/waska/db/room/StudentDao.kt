@@ -24,5 +24,5 @@ interface StudentDao {
     fun getAllStudents(): LiveData<List<StudentEntity>>
 
     @Query("SELECT * FROM students WHERE number = :number")
-    fun getStudentByNumber(number: Int): LiveData<StudentEntity>
+    fun getStudentByNumber(number: Int): LiveData<List<StudentEntity>>
 }

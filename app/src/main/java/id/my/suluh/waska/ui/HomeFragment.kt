@@ -34,9 +34,12 @@ class HomeFragment : Fragment() {
             searchView.setupWithSearchBar(searchBar)
 
             searchView.editText.setOnEditorActionListener { _, _, _ ->
-                searchBar.setText(searchView.text.toString())
+                val searchText = searchView.text.toString()
+                val keywords = if (searchText == "") null else searchText
+
+                searchBar.setText(keywords)
                 searchView.hide()
-                homeViewModel.searchStudent(searchView.text.toString())
+                homeViewModel.searchStudent(keywords)
                 false
             }
         }
@@ -61,13 +64,25 @@ class HomeFragment : Fragment() {
     }
 
     private fun showStudents(students: ArrayList<StudentList>) {
+        if (students.isEmpty()) {
+            with (binding) {
+                rvStudents.visibility = View.GONE
+                noStudentsFound.visibility = View.VISIBLE
+            }
+
+            return
+        }
+
         val linearLayoutManager = LinearLayoutManager(activity)
         val listAdapter = StudentListAdapter(students)
 
-        binding.rvStudents.apply {
-            layoutManager = linearLayoutManager
-            adapter = listAdapter
-            setHasFixedSize(true)
+        with (binding) {
+            rvStudents.apply {
+                layoutManager = linearLayoutManager
+                adapter = listAdapter
+                setHasFixedSize(true)
+            }
+            rvStudents.visibility = View.VISIBLE
         }
 
         listAdapter.setOnItemClickCallback(object : StudentListAdapter.OnItemClickCallback {
